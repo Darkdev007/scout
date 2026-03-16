@@ -59,7 +59,7 @@ A user sends a research query. The LangGraph agent reads the goal, decides which
 ├── server.py             # FastAPI app, auth, /research and /health endpoints
 ├── dockerfile            # Container definition
 ├── requirements.txt      # Python dependencies
-├── .env         # Environment variable template
+├── .env         # Environment variable 
 └── templates/
     └── index.html        # Jinja2 frontend — search UI with agent trace display
 ```
@@ -178,13 +178,7 @@ source venv/bin/activate     # Mac/Linux
 pip install -r requirements.txt
 ```
 
-4. **Set up environment variables:**
-```bash
-cp .env.example .env
-# edit .env and add your API keys
-```
-
-5. **Run the server:**
+4. **Run the server:**
 ```bash
 uvicorn server:app --reload --port 8000
 ```
