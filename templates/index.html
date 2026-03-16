@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a08;
+      --surface: #111110;
+      --border: #2a2a26;
+      --accent: #c8f060;
+      --accent-dim: #8aaa30;
+      --text: #e8e8e0;
+      --muted: #666660;
+      --tool-bg: #161614;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 2rem 3rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+
+    .tagline {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+    }
+
+    main {
+      flex: 1;
+      max-width: 860px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .intro {
+      margin-bottom: 2.5rem;
+    }
+
+    .intro h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.75rem;
+    }
+
+    .intro h1 span {
+      color: var(--accent);
+    }
+
+    .intro p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 0;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .search-box:focus-within {
+      border-color: var(--accent);
+    }
+
+    .search-box textarea {
+      flex: 1;
+      background: var(--surface);
+      border: none;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.9rem;
+      padding: 1rem 1.25rem;
+      resize: none;
+      outline: none;
+      min-height: 80px;
+      line-height: 1.6;
+    }
+
+    .search-box textarea::placeholder {
+      color: var(--muted);
+    }
+
+    .search-box button {
+      background: var(--accent);
+      color: #0a0a08;
+      border: none;
+      padding: 0 1.5rem;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .search-box button:hover {
+      background: #d4f570;
+    }
+
+    .search-box button:disabled {
+      background: var(--muted);
+      cursor: not-allowed;
+    }
+
+    .examples {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .example-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.4rem 0.75rem;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .example-pill:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* trace */
+    .trace {
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .trace-label {
+      font-size: 0.7rem;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    .trace-item {
+      background: var(--tool-bg);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--accent-dim);
+      padding: 0.6rem 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--muted);
+      border-radius: 2px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .trace-item .tool-name {
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    .trace-result {
+      border-left-color: var(--border);
+    }
+
+    /* answer */
+    .answer-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--accent);
+      padding: 2rem;
+      border-radius: 2px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .answer-label {
+      font-size: 0.7rem;
+      font-family: 'DM Mono', monospace;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.25rem;
+    }
+
+    .answer-content {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.88rem;
+      line-height: 1.8;
+      color: var(--text);
+      white-space: pre-wrap;
+    }
+
+    .answer-content h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin: 1.5rem 0 0.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .answer-content h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text);
+      margin: 1rem 0 0.4rem;
+    }
+
+    .answer-content strong {
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* loading */
+    .loading {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      padding: 1.5rem 0;
+    }
+
+    .dot-pulse {
+      display: flex;
+      gap: 4px;
+    }
+
+    .dot-pulse span {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 1.2s infinite;
+    }
+
+    .dot-pulse span:nth-child(2) { animation-delay: 0.2s; }
+    .dot-pulse span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes pulse {
+      0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+      40% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .error-box {
+      background: #1a0a0a;
+      border: 1px solid #4a1a1a;
+      border-left: 2px solid #ff4444;
+      padding: 1rem 1.25rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      color: #ff8888;
+      border-radius: 2px;
+    }
+
+    footer {
+      padding: 1.5rem 3rem;
+      border-top: 1px solid var(--border);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Scout</div>
+  <div class="tagline">autonomous african market research</div>
+</header>
+
+<main>
+  <div class="intro">
+    <h1>Research African markets.<br><span>Instantly.</span></h1>
+    <p>Type a goal — Scout calls the right sources and returns a structured briefing.</p>
+  </div>
+
+  <div class="search-box">
+    <textarea id="query" placeholder="e.g. Give me a full briefing on Flutterwave..." rows="3"></textarea>
+    <button id="submit-btn" onclick="runResearch()">Research ↗</button>
+  </div>
+
+  <div class="examples">
+    <div class="example-pill" onclick="setQuery('Give me a full briefing on Flutterwave')">Flutterwave briefing</div>
+    <div class="example-pill" onclick="setQuery('What is happening in Nigerian fintech this week?')">Nigerian fintech this week</div>
+    <div class="example-pill" onclick="setQuery('Brief me on Moniepoint from an investor perspective')">Moniepoint investor brief</div>
+    <div class="example-pill" onclick="setQuery('What is the current NGN to USD rate and what does it mean for Nigerian businesses?')">NGN/USD analysis</div>
+    <div class="example-pill" onclick="setQuery('I am a foreign investor entering Nigeria. Give me a full market brief.')">Nigeria market entry</div>
+  </div>
+
+  <div id="output"></div>
+</main>
+
+<footer>
+  <span>Scout v1.0 — African market intelligence</span>
+  <span id="status">ready</span>
+</footer>
+
+<script>
+  function setQuery(text) {
+    document.getElementById('query').value = text;
+    document.getElementById('query').focus();
+  }
+
+  function setStatus(text) {
+    document.getElementById('status').textContent = text;
+  }
+
+  function renderMarkdown(text) {
+    return text
+      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+      .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/^- (.+)$/gm, '• $1')
+      .replace(/\n/g, '<br>');
+  }
+
+  async function runResearch() {
+    const query = document.getElementById('query').value.trim();
+    if (!query) return;
+
+    const output = document.getElementById('output');
+    const btn = document.getElementById('submit-btn');
+
+    btn.disabled = true;
+    setStatus('researching...');
+
+    output.innerHTML = `
+      <div class="loading">
+        <div class="dot-pulse">
+          <span></span><span></span><span></span>
+        </div>
+        Scout is researching...
+      </div>
+    `;
+
+    try {
+      const response = await fetch('/research', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query }),
+      });
+
+      if (!response.ok) throw new Error(`Server error: ${response.status}`);
+
+      const data = await response.json();
+
+      // build trace HTML
+      let traceHTML = '';
+      if (data.trace && data.trace.length > 0) {
+        traceHTML = '<div class="trace"><div class="trace-label">Agent trace</div>';
+        for (const item of data.trace) {
+          if (item.tool) {
+            traceHTML += `<div class="trace-item">
+              <span class="tool-name">${item.tool}</span>
+              <span style="color:#444"> → ${JSON.stringify(item.input)}</span>
+            </div>`;
+          } else if (item.tool_result) {
+            traceHTML += `<div class="trace-item trace-result">
+              ✓ ${item.tool_result}: ${item.preview.substring(0, 120)}...
+            </div>`;
+          }
+        }
+        traceHTML += '</div>';
+      }
+
+      // render answer
+      const answerHTML = `
+        <div class="answer-box">
+          <div class="answer-label">Scout's briefing</div>
+          <div class="answer-content">${renderMarkdown(data.answer)}</div>
+        </div>
+      `;
+
+      output.innerHTML = traceHTML + answerHTML;
+      setStatus('done');
+
+    } catch (err) {
+      output.innerHTML = `<div class="error-box">Error: ${err.message}</div>`;
+      setStatus('error');
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  // allow Ctrl+Enter to submit
+  document.getElementById('query').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      runResearch();
+    }
+  });
+</script>
+
+</body>
+</html>
+
