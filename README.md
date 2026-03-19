@@ -10,9 +10,17 @@ When you type a query, Scout — an autonomous research agent — searches Wikip
 
 | Resource | URL |
 |----------|-----|
-| Web UI | https://scoutversiononecontainer.mangopond-9dd86caa.westus2.azurecontainerapps.io/ |
-| API Docs | https://scoutversiononecontainer.mangopond-9dd86caa.westus2.azurecontainerapps.io/docs |
-| Health Check | https://scoutversiononecontainer.mangopond-9dd86caa.westus2.azurecontainerapps.io/health |
+| Web UI | https://scoutcontainer.kindstone-48c6e346.westus2.azurecontainerapps.io/ |
+| API Docs | https://scoutcontainer.kindstone-48c6e346.westus2.azurecontainerapps.io/docs |
+| Health Check | https://scoutcontainer.kindstone-48c6e346.westus2.azurecontainerapps.io/health |
+
+---
+
+## Access
+
+Scout is password protected. To access the web UI or API, you'll need login credentials.
+
+**Request access:** Reach out to me directly on [LinkedIn](https://www.linkedin.com/in/tobiloba-ayodele/) and I'll send you the username and password.
 
 ---
 
